@@ -113,3 +113,21 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+
+/* USER css */
+
+.user_label {
+    margin: 5px 0;
+    color: white;
+    padding: 2px 5px;
+    font-size: .95em;
+}
+
+.user_label .checkbox {
+    margin: 0;
+}
+
+.user_label .checkbox label {
+    display: block;
+}
