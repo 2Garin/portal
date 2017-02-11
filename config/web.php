@@ -3,52 +3,50 @@
 $params = require(__DIR__ . '/params.php');
 
 $config = [
-    'id' => 'basic',
-    'name' => 'Portal',
-    'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'id'         => 'basic',
+    'name'       => 'Portal',
+    'basePath'   => dirname(__DIR__),
+    'bootstrap'  => ['log'],
     'components' => [
-        'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'c_668GxAKhbUAZZDzs9eSICyo9xfKETz',
-
+        'request'      => [
+            'cookieValidationKey' => require_once(__DIR__ . '/_valid_key.php'),
         ],
-        'cache' => [
+        'cache'        => [
             'class' => 'yii\caching\FileCache',
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
+        'user'         => [
+            'identityClass'   => 'app\models\User',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'mailer'     => [
-            'class' => 'yii\swiftmailer\Mailer',
+        'mailer'       => [
+            'class'            => 'yii\swiftmailer\Mailer',
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
-        'log'        => [
+        'log'          => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
+            'targets'    => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class'  => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
             ],
         ],
-        'db'         => require(__DIR__ . '/_db.php'),
-        'urlManager' => [
+        'db'           => require_once(__DIR__ . '/_db.php'),
+        'urlManager'   => [
             'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
+            'showScriptName'  => false,
+            'rules'           => [
             ],
         ],
-        'vk'         => require_once(__DIR__ . '/_vk.php'),
+        'vk'           => require_once(__DIR__ . '/_vk.php'),
     ],
-    'params' => $params,
+    'params'     => $params,
 ];
 
 if (YII_ENV_DEV) {
