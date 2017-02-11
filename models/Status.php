@@ -8,10 +8,12 @@ use Yii;
  * This is the model class for table "status".
  *
  * @property integer $status_id
- * @property string $user_id
+ * @property integer $user_id
  * @property string $date
  * @property integer $status
  * @property string $response
+ *
+ * @property Info $user
  */
 class Status extends \yii\db\ActiveRecord
 {
@@ -30,10 +32,22 @@ class Status extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'required'],
+            [['user_id', 'status'], 'integer'],
             [['date'], 'safe'],
-            [['status'], 'integer'],
             [['response'], 'string'],
-            [['user_id'], 'string', 'max' => 255],
+            [
+                ['user_id', 'date'],
+                'unique',
+                'targetAttribute' => ['user_id', 'date'],
+                'message'         => 'The combination of User ID and Date has already been taken.',
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError'     => true,
+                'targetClass'     => Info::className(),
+                'targetAttribute' => ['user_id' => 'user_id'],
+            ],
         ];
     }
 
@@ -49,5 +63,13 @@ class Status extends \yii\db\ActiveRecord
             'status' => 'Status',
             'response' => 'Response',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(Info::className(), ['user_id' => 'user_id']);
     }
 }

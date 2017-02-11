@@ -44,7 +44,6 @@ $config = [
             'rules'           => [
             ],
         ],
-        'vk'           => require_once(__DIR__ . '/_vk.php'),
     ],
     'params'     => $params,
 ];
