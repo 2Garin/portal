@@ -12,7 +12,7 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'log' => [
+        'log'   => [
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
@@ -20,7 +20,8 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db,
+        'db'    => $db,
+        'vk'    => require_once(__DIR__ . '/_vk.php'),
     ],
     'params' => $params,
     /*
