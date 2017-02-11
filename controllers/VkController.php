@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Status;
+use app\models\Period;
+use app\models\Info;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -33,7 +35,7 @@ class VkController extends Controller
     public function actionIndex()
     {
         return $this->render('index', [
-            'users' => (new Status)->getUsersInfo(),
+            'users' => (new Info)->getUsersInfo(),
         ]);
     }
 
@@ -41,49 +43,38 @@ class VkController extends Controller
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        $usersInfo = (new Status)->getUsersInfo();
+        $usersInfo = (new Info)->getUsersInfo();
 
-        $journal = [];
-        foreach (Status::find()
-                     ->where(['between', 'date', $start, $end])
-                     ->andWhere($users ? ['user_id' => $users] : [])
-                     ->all() as $row) {
-            /** @var Status $row */
-            $journal[] = [
-                'date' => $row->date,
-                'user_id' => $row->user_id,
-            ];
+        $query = Period::find()
+            ->where([
+                'or',
+                ['between', 'period_start', $start, $end],
+                ['between', 'period_end', $start, $end],
+            ]);
+
+        if (!empty($users)) {
+            $query->andWhere(['user_id' => $users]);
         }
-        unset($row);
+
+        $journal = $query->all();
 
         $eventId = 0;
         $events = array();
-//        foreach ($journal as $item) {
-//            $Event = new cEvent();
-//            $Event->id = ++$eventId;
-//            $Event->title = 'title';
-//            $Event->description = 'description';
-//
-//            $Event->start = date('Y-m-d\TH:i:s\Z');
-//            $Event->end = date('Y-m-d\TH:i:s\Z');
-//
-//            $Event->color = 'color';
-//
-//            $events[] = $Event;
-//        }
-//        unset($item);
+        foreach ($journal as $item) {
+            /* @var Period $item */
+            $Event = new cEvent();
+            $Event->id = ++$eventId;
+//            $Event->title = $item->user_id;
+            $Event->description = 'description';
 
-        $Event = new cEvent();
-        $Event->id = 1;
-        $Event->title = 'Testing';
-        $Event->start = date('Y-m-d\TH:i:s\Z');
-        $events[] = $Event;
+            $Event->start = $item->period_start;
+            $Event->end = $item->period_end;
 
-        $Event = new cEvent();
-        $Event->id = 2;
-        $Event->title = 'Testing';
-        $Event->start = date('Y-m-d\TH:i:s\Z',strtotime('tomorrow 6am'));
-        $events[] = $Event;
+            $Event->color = $usersInfo[$item->user_id]['color'];
+
+            $events[] = $Event;
+        }
+        unset($item);
 
         return $events;
     }

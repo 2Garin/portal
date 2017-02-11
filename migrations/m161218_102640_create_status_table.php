@@ -22,10 +22,10 @@ class m161218_102640_create_status_table extends Migration
 
         $this->createTable(self::STATUS, [
             'status_id' => $this->primaryKey()->unsigned(),
-            'user_id' => $this->string()->notNull(),
-            'date' => $this->dateTime()->defaultValue(null),
-            'status' => $this->boolean()->defaultValue(0),
-            'response' => $this->text(),
+            'user_id'   => $this->integer()->unsigned()->notNull(),
+            'date'      => $this->dateTime()->defaultValue(null),
+            'status'    => $this->boolean()->defaultValue(0),
+            'response'  => $this->text(),
         ], $tableOptions);
 
         $this->createIndex('uk_status_user_id_date', self::STATUS, ['user_id', 'date'], true);

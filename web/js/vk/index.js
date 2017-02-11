@@ -18,8 +18,6 @@ $(document).ready(function () {
         }
 
         $fullCalendar.fullCalendar('removeEventSources');
-        $fullCalendar.fullCalendar('refetchEvents');
         $fullCalendar.fullCalendar('addEventSource', PORTAL.activityUrl + '?' + $.param({users: usersId}));
-        $fullCalendar.fullCalendar('refetchEvents');
     });
 });

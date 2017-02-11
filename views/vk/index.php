@@ -2,6 +2,7 @@
 
 use yii\web\JsExpression;
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $users */
@@ -31,16 +32,25 @@ JS;
             <strong>Users</strong>
         </div>
         <div class="users">
-            <? foreach ($users as $userId => $user): ?>
-                <div class="user_label" style="background-color: <?= $user['color'] ?>;">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" value="<?= $userId ?>" checked>
-                            <?= $userId ?>
-                        </label>
-                    </div>
-                </div>
-            <? endforeach; ?>
+            <?php
+            foreach ($users as $userId => $user) {
+                echo Html::beginTag('div', [
+                    'class' => 'user_label',
+                    'style' => 'background-color: ' . $user['color'],
+                ]);
+                echo Html::beginTag('div', ['class' => 'checkbox',]);
+                echo Html::beginTag('label');
+                echo Html::tag('input', '', [
+                    'type'    => 'checkbox',
+                    'value'   => $userId,
+                    'checked' => 'checked',
+                ]);
+                echo $user['name'];
+                echo Html::endTag('label');
+                echo Html::endTag('div');
+                echo Html::endTag('div');
+            }
+            ?>
         </div>
     </div>
     <div class="col-lg-10">

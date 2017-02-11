@@ -21,10 +21,10 @@ class m161218_102708_create_period_table extends Migration
         }
 
         $this->createTable(self::PERIOD, [
-            'period_id' => $this->primaryKey()->unsigned(),
-            'user_id' => $this->string()->notNull(),
+            'period_id'    => $this->primaryKey()->unsigned(),
+            'user_id'      => $this->integer()->unsigned()->notNull(),
             'period_start' => $this->dateTime()->defaultValue(null),
-            'period_end' => $this->dateTime()->defaultValue(null),
+            'period_end'   => $this->dateTime()->defaultValue(null),
         ], $tableOptions);
     }
 
