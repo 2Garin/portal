@@ -7,7 +7,7 @@ $config = [
     'name'       => 'Portal',
     'basePath'   => dirname(__DIR__),
     'bootstrap'  => ['log'],
-    'components' => [
+    'components'       => [
         'request'      => [
             'cookieValidationKey' => require_once(__DIR__ . '/_valid_key.php'),
         ],
@@ -45,7 +45,20 @@ $config = [
             ],
         ],
     ],
-    'params'     => $params,
+    'as beforeRequest' => [
+        'class' => 'yii\filters\AccessControl',
+        'rules' => [
+            [
+                'actions' => ['login', 'error'],
+                'allow'   => true,
+            ],
+            [
+                'allow' => true,
+                'roles' => ['@'],
+            ],
+        ],
+    ],
+    'params'           => $params,
 ];
 
 if (YII_ENV_DEV) {
