@@ -33,7 +33,7 @@ class UpgraderController extends Controller
                     $status->date = new \yii\db\Expression('NOW()');
                     $status->status = $row['online'];
                     $status->response = json_encode($row);
-                    $status->save();ExceptionException
+                    $status->save();
                 } catch (\yii\db\IntegrityException $e) {
                     \Yii::warning('Status save error - ' . VarDumper::dumpAsString($e));
                 }
