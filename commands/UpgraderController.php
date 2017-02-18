@@ -27,12 +27,16 @@ class UpgraderController extends Controller
 
         if (is_array($s)) {
             foreach ($s as $row) {
-                $status = new Status();
-                $status->user_id = $row['id'];
-                $status->date = new \yii\db\Expression('NOW()');
-                $status->status = $row['online'];
-                $status->response = json_encode($row);
-                $status->save();
+                try {
+                    $status = new Status();
+                    $status->user_id = $row['id'];
+                    $status->date = new \yii\db\Expression('NOW()');
+                    $status->status = $row['online'];
+                    $status->response = json_encode($row);
+                    $status->save();ExceptionException
+                } catch (\yii\db\IntegrityException $e) {
+                    \Yii::warning('Status save error - ' . VarDumper::dumpAsString($e));
+                }
             }
             unset($row);
         } else {
