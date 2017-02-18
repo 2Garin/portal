@@ -6,6 +6,7 @@ use yii\console\Controller;
 use app\components\Vk;
 use app\models\Status;
 use app\models\Info;
+use yii\helpers\VarDumper;
 
 class UpgraderController extends Controller
 {
@@ -24,14 +25,18 @@ class UpgraderController extends Controller
                 'name_case' => 'Nom',
             ]);
 
-        foreach ($s as $row) {
-            $status = new Status();
-            $status->user_id = $row['id'];
-            $status->date = new \yii\db\Expression('NOW()');
-            $status->status = $row['online'];
-            $status->response = json_encode($row);
-            $status->save();
+        if (is_array($s)) {
+            foreach ($s as $row) {
+                $status = new Status();
+                $status->user_id = $row['id'];
+                $status->date = new \yii\db\Expression('NOW()');
+                $status->status = $row['online'];
+                $status->response = json_encode($row);
+                $status->save();
+            }
+            unset($row);
+        } else {
+            \Yii::warning('VK response is not array ' . VarDumper::dumpAsString($s));
         }
-        unset($row);
     }
 }
