@@ -149,8 +149,7 @@ class Vk
 
         // Произошла ошибка на стороне VK, коды ошибок тут https://vk.com/dev/errors
         if (isset($json['error'], $json['error']['error_msg'], $json['error']['error_code'])) {
-
-            throw new Exception($json['error']['error_msg'], $json['error']['error_code']);
+            throw new \yii\web\ServerErrorHttpException($json['error']['error_msg'], $json['error']['error_code']);
         }
 
         if (isset($json['response'])) {
